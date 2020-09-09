@@ -1,0 +1,363 @@
+openapi: 3.0.0
+info:
+  title: api-files
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /file:
+    get:
+      summary: Search By Id
+      tags: []
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      operationId: get-file
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: file_id
+          required: true
+      description: Retorna o arquivo pelo id
+  /file/name/:
+    get:
+      summary: Search By Name
+      tags: []
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      operationId: get-file-name
+      description: Retorna o arquivo pelo nome
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: file_name
+          required: true
+  /v1/files:
+    post:
+      summary: File - Store
+      operationId: post-v1-files
+      responses:
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      description: Endpoint para salvar um arquivo
+    put:
+      summary: File - Update
+      operationId: put-v1-files
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      description: Endpoint para editar um arquivo
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: file_id
+    delete:
+      summary: ''
+      operationId: delete-v1-files
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      description: Endpoint para deletar um arquivo
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: file_id
+          required: true
+    get:
+      summary: ''
+      operationId: get-v1-files
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  file:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      file:
+                        type: string
+                      folder:
+                        type: string
+                      name:
+                        type: string
+                      url:
+                        type: string
+                      type:
+                        type: string
+                      subtype:
+                        type: string
+                      file_types_id:
+                        type: integer
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
+              examples:
+                return api:
+                  value:
+                    file:
+                      id: 49
+                      file: 1599144477786ec41b5a7-827b-4344-8c7c-12422d479ee9.pdf
+                      folder: contract
+                      name: contract_58
+                      url: 'http://127.0.0.1:3333/tmp/contract/1599144477786ec41b5a7-827b-4344-8c7c-12422d479ee9.pdf}'
+                      type: application
+                      subtype: pdf
+                      file_types_id: 2
+                      created_at: '2020-09-03 11:47:57'
+                      updated_at: '2020-09-03 11:47:57'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      description: 'Endpoint para mostrar dados de um arquivo '
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: file_id
+  /v1/pdf:
+    get:
+      summary: PDF - Store
+      tags: []
+      responses: {}
+      operationId: get-v1-pdf
+    post:
+      summary: PDF - Store
+      operationId: post-v1-pdf
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  file_id:
+                    type: string
+                  file_url:
+                    type: string
+              examples:
+                return api:
+                  value:
+                    key: contract
+                    file_id: 31
+                    file_url: 'http://127.0.0.1:3333/tmp/contract/1599143077976ff476872-8c17-43db-9036-98708bb71a4c.pdf}'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                template:
+                  type: string
+                folder:
+                  type: string
+                file_key:
+                  type: string
+                file_name:
+                  type: string
+            examples:
+              'body api ':
+                value:
+                  template: html
+                  folder: contract
+                  file_key: contract
+                  file_name: teste
+  /filestype:
+    get:
+      summary: File Type - Index
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  types:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        key:
+                          type: string
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                        active:
+                          type: boolean
+              examples:
+                return api:
+                  value:
+                    types:
+                      - id: 1
+                        name: cpf
+                        key: '1'
+                        created_at: '2020-08-20 10:10:10'
+                        updated_at: '2020-08-20 10:10:10'
+                        active: true
+                      - id: 2
+                        name: contract
+                        key: contract
+                        created_at: '2020-08-20 10:10:10'
+                        updated_at: '2020-08-20 10:10:10'
+                        active: true
+      operationId: get-filestype
+      description: Endpoint que retorna os tipos de arquivos
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: page
+    post:
+      summary: File Type - Store
+      operationId: post-filestype
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                return api:
+                  value:
+                    message: FileType created
+      description: Endpoint para criar um tipo de arquivo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                active:
+                  type: boolean
+        description: ''
+    put:
+      summary: File Type - Update
+      operationId: put-filestype
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                return api:
+                  value:
+                    message: FileType updated
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                return api:
+                  value:
+                    message: FileType not found
+      description: Endpoint para editar um tipo de arquivo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                active:
+                  type: boolean
+            examples: {}
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: file_type_id
+    parameters: []
+    delete:
+      summary: File Type - Destroy
+      operationId: delete-filestype
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                return api:
+                  value:
+                    message: FileType inactived
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                return api:
+                  value:
+                    message: Failed to try to inactive
+      description: Endpoint para desativar tipo de arquivo
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: file_type_id
+components:
+  schemas: {}
